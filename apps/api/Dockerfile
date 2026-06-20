@@ -1,9 +1,9 @@
-FROM python:3.12-slim
+FROM python:3.11-slim
 
 WORKDIR /app
 
 COPY pyproject.toml .
-RUN pip install --no-cache-dir -e ".[dev]"
+RUN mkdir -p src && pip install --no-cache-dir -e ".[dev]"
 
 COPY . .
 
