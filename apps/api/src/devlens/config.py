@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
     database_url: str = "sqlite:////app/data/devlens.db"
-    claude_data_path: Path = Path("/home/claude_data")
+    claude_data_path: Path = Path("~/.claude")
 
     github_token: Optional[str] = None
     github_org: Optional[str] = None
