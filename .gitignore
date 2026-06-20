@@ -15,6 +15,7 @@ build/
 # Next.js
 .next/
 out/
+tsconfig.tsbuildinfo
 
 # SQLite
 *.db
