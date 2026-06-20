@@ -116,9 +116,6 @@ class SyncEngine:
         total_input = total_output = 0
         models: list[str] = []
 
-        # Track tool_use_id → tool_name for error attribution
-        tool_id_to_name: dict[str, str] = {}
-
         for parsed_msg in parsed.messages:
             if parsed_msg.timestamp:
                 timestamps.append(parsed_msg.timestamp)
@@ -147,11 +144,10 @@ class SyncEngine:
                     tool_counts[tool_name] = {"exec": 0, "err": 0}
                 tool_counts[tool_name]["exec"] += 1
 
-            # Attribute errors back to originating tools
-            for tool_use_id in parsed_msg.tool_error_ids:
-                err_tool = tool_id_to_name.get(tool_use_id)
-                if err_tool and err_tool in tool_counts:
-                    tool_counts[err_tool]["err"] += 1
+            # tool_error_ids contains resolved tool names (resolved in parser)
+            for tool_name in parsed_msg.tool_error_ids:
+                if tool_name in tool_counts:
+                    tool_counts[tool_name]["err"] += 1
 
         for tool_name, counts in tool_counts.items():
             self.db.add(

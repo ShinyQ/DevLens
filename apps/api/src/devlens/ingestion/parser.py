@@ -141,7 +141,8 @@ def _parse_user(entry: dict, tool_id_map: dict[str, str]) -> Optional[ParsedMess
                 if block.get("is_error"):
                     tool_use_id = block.get("tool_use_id", "")
                     if tool_use_id:
-                        tool_error_ids.append(tool_use_id)
+                        # Resolve to tool name so engine can attribute errors by name
+                        tool_error_ids.append(tool_id_map.get(tool_use_id, tool_use_id))
             elif block_type == "text":
                 text = block.get("text", "")
                 if text:
